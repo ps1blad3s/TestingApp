@@ -16,7 +16,27 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log(formData);
+        try {
+            const response = await fetch('http://localhost:5000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || 'Ошибка при входе');
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+        } catch (err) {
+            console.log(err);
+        }
+        
     };
 
     return (
